@@ -1,0 +1,15 @@
+{
+	// Required
+	"name": "Join",
+	"version": "0.1.0",
+	"id": "join",
+	"api_version": 1,
+	"main_file": "js/main.js",
+	"assets": {
+		"methods": ["joinInput","join"]
+	},
+
+	// Optional
+	"description": "Join a server via an IP.",
+	"tags": ["join"]
+}
