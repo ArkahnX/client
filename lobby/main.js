@@ -18,19 +18,33 @@ exports.joinInput = function() {
 	}, false);
 };
 
-exports.join = function(ip) {
+function loadJS(src, callback) {
 	var document = window.document;
-	var script = document.createElement("script");
-	script.setAttribute("src", "http://" + ip + "/socket.io/socket.io.js");
-	var body = document.body;
-	body.appendChild(script);
-	script.onload = function() {
-		var socket = io.connect('http://'+ip);
-		socket.on('news', function(data) {
-			console.log(data);
-			socket.emit('my other event', {
-				my: 'data'
-			});
-		});
+	var s = document.createElement('script');
+	s.src = src;
+	s.async = true;
+	s.onreadystatechange = s.onload = function() {
+		var state = s.readyState;
+		if (!callback.done && (!state || /loaded|complete/.test(state))) {
+			callback.done = true;
+			callback();
+		}
 	};
+	document.getElementsByTagName('head')[0].appendChild(s);
+}
+
+exports.join = function(ip) {
+	loadJS("http://" + ip + "/socket.io/socket.io.js", function() {
+		exports.connect(ip);
+	});
+};
+
+exports.connect = function(ip) {
+	var socket = window.io.connect('http://' + ip);
+	socket.on('news', function(data) {
+		console.log(data);
+		socket.emit('my other event', {
+			my: 'data'
+		});
+	});
 };

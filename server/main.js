@@ -1,9 +1,8 @@
 var extensions = nodeRequire("engine/extensions.js");
 console.log(extensions.onAssetsReady)
 extensions.onAssetsReady.listen(function() {
-	console.log("start")
 	var self = extensions.get("host_server");
-	self.startServer();
+	// self.startServer();
 });
 exports.startServer = function() {
 	var http = require('http');
